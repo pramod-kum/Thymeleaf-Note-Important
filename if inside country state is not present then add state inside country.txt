@@ -1,0 +1,51 @@
+<script>
+    $(document).ready(function() {
+        // Define a function to handle the change event
+        function handleCountryChange() {
+            // Get the selected value and store it in the countryId variable
+            let countryId = $('.Contid').val();
+            console.log(countryId);
+
+            // Call your custom function with the countryId or perform other actions
+            updateLink(countryId);
+        }
+
+        // Attach the handleCountryChange function to the change event of Contid
+        $('.Contid').on('change', handleCountryChange);
+
+        // Initial call to set up the link based on the default value (if any)
+        handleCountryChange();
+    });
+
+    // Define your custom function to update the link or perform other actions
+    function updateLink(countryId) {
+        $('#addLink').attr('href', '/testing/add-address?countryId=' + countryId);
+        // Add more custom logic here if needed
+    }
+</script>
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+<tr>
+								<th>Country:<span class="text-red">*</span></th>
+								<td><select id="curCountry" name="Communication_country"
+										class="input-group py-1 navbar-bgcolor text-light Contid" required>
+										<option value="">Select</option>
+										<option th:each="data : ${countriesData}" th:value="${data.id}">
+											[[${data.countryName}]] -
+											[[${data.id}]]</option>
+									</select></td>
+							</tr>
+
+							<tr>
+								<th>State:<span class="text-red">*</span></th>
+
+								<td><select name="communication_state" id="curState"
+										class="input-group py-1 navbar-bgcolor text-light" required>
+										<option value="">Select Country First</option>
+									</select>
+									<label for="habitation"><small>If State not found</small></label>
+
+									<a id="addLink" class="btn btn-primary" style="font-size: 0.5em;" onclick="return confirm('Are you sure, You want add State.')">Add</a>
+										
+								</td>

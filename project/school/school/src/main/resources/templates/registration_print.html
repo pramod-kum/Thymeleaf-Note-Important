@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Student Registration Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .navbar-custom {
+      background-color: black;
+    }
+     /* Your custom styles here */
+    .table-custom th {
+      background-color: #343a40;
+      color: white;
+    }
+    .table-custom tbody tr:hover {
+      background-color: #e9ecef;
+    }
+    .table-custom tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="https://mbispatna.org/assets/images/logo-white.png" alt="Logo" height="70">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <form>
+    <table class="table table-striped table-hover table-custom" th:object="${studentRegistrationEntity}"f>
+      <tr><td colspan="6" style="text-align:center"><h3>Student Registration Form</h3></td></tr>
+      <tr>
+        <th>Student Name</th>
+        <td><input type="text" th:field="*{studentName}" class="form-control" disabled></td>
+        <th>Father Name</th>
+        <td><input type="text" th:field="*{fatherName}" class="form-control" disabled></td>
+        <th>Mother Name</th>
+        <td><input type="text" th:field="*{motherName}" class="form-control" disabled></td>
+      </tr>
+      <tr>
+        <th>Address</th>
+        <td colspan="5"><textarea th:field="*{address}" class="form-control" disabled></textarea></td>
+      </tr>
+      <tr>
+        <th>Class</th>
+        <td colspan="5">
+          <select  class="form-control" disabled>
+            <option value="1">Class 1</option>
+            <option value="2">Class 2</option>
+            <option value="3">Class 3</option>
+            <option value="4">Class 4</option>
+            <option value="5">Class 5</option>
+            <option value="6">Class 6</option>
+            <option value="7">Class 7</option>
+            <option value="8">Class 8</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>Phone Number</th>
+        <td><input type="text" th:field="*{phoneNumber}" class="form-control" disabled></td>
+        <th>Email</th>
+        <td><input type="email" th:field="*{email}" class="form-control" disabled></td>
+        <th>Date of Birth</th>
+        <td><input type="date" th:field="*{dob}" class="form-control" disabled></td>
+      </tr>
+      <tr>
+        <th>Gender</th>
+        <td colspan="5">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" th:field="*{gender}" id="male" value="male" disabled>
+            <label class="form-check-label" for="male">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" th:field="*{gender}" id="female" value="female" disabled>
+            <label class="form-check-label" for="female">Female</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" th:field="*{gender}" id="other" value="other" disabled>
+            <label class="form-check-label" for="other">Other</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>Emergency Contact</th>
+        <td colspan="5"><input type="text" th:field="*{emergencyContact}" class="form-control" disabled></td>
+      </tr>
+      <tr>
+        <td colspan="6" class="text-center no-print">
+          <button type="button" class="btn btn-primary" onclick="window.print()">Print</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <div class="signature">
+    <p>Principal's Signature</p>
+    <div class="line"></div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

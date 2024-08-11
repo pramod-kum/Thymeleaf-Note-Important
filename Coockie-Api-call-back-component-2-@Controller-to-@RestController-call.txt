@@ -1,0 +1,199 @@
+@GetMapping("/from-college-wise/{collegeId}/{courseYear}/{academicYear}")
+	public String admissionListFromCollegeWiseController(@PathVariable String collegeId,@PathVariable String courseYear,@PathVariable String academicYear, Model model, HttpServletRequest httpServletRequest) {
+		
+		//find College Object
+		CollegeMasterEntity collegeData = collegeMasterRepository.findById(Long.parseLong(collegeId))
+        		.orElseThrow(() -> new IllegalArgumentException("Invalid id: " + collegeId));
+		
+		
+		// /api/v1/find-student-list/{collegeId}/{courseYear}/{academicYear}
+		
+        
+       //  API URL
+        String apiEndpoint = "/api/v1/find-student-list/"+collegeId+"/"+"/"+courseYear+"/"+academicYear;
+
+         // Make the API call
+         ApiResponse<StudentListDto[]> admissionDataResponse = apiCallbackComponent.callDtoApiWithCookies(apiEndpoint, httpServletRequest, StudentListDto[].class);
+
+      // Check if the response is successful
+         if (admissionDataResponse.getData() != null) {
+             // If successful, add the data to the model
+             model.addAttribute("admissionListData", admissionDataResponse.getData());
+         } else {
+             // If there's an error, add the error message to the model
+             model.addAttribute("errorMessage", admissionDataResponse.getMessage());
+         }
+         
+         return "admissions_list/admission_list_from_college_wise"; 
+     }
+
+///////////////////////////////////////////////////////
+package com.larchsoft.sgeiSoftwareClient.api_common;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
+@Component("staffDetailsApiCallbackComponent")
+public class ApiCallbackComponent {
+
+	private final RestTemplate restTemplate;
+
+    public ApiCallbackComponent(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public <T> ApiResponse<T[]> callDtoApiWithCookies(String apiEndpoint, HttpServletRequest request, Class<T[]> responseType) {
+    	Cookie[] cookies = request.getCookies();
+    	if (cookies != null) {
+            HttpHeaders headers = new HttpHeaders();
+            for (Cookie cookie : cookies) {
+                headers.add(HttpHeaders.COOKIE, cookie.getName() + "=" + cookie.getValue());
+            }
+
+            HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+            
+            // Get base URL from HttpServletRequest
+            String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+
+            // Construct full API URL
+            String apiUrl = baseUrl + apiEndpoint;
+
+            ResponseEntity<T[]> responseEntity = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.GET,
+                    requestEntity,
+                    responseType
+            );
+
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                // If API call was successful, return the data
+                return new ApiResponse<>(responseEntity.getBody(), "Success");
+            } else {
+                // If API call failed, return an error response
+                return new ApiResponse<>(null, "Failed to fetch data from the API: " + responseEntity.getStatusCode());
+            }
+        } else {
+            // Handle case where no cookies are present
+            return new ApiResponse<>(null, "No cookies found in the request.");
+        }
+    }
+    
+
+//    public String callApiWithCookies(String apiEndpoint, HttpServletRequest request) {
+//    	Cookie[] cookies = request.getCookies();
+//    	if (cookies != null) {
+//            HttpHeaders headers = new HttpHeaders();
+//            for (Cookie cookie : cookies) {
+//                headers.add(HttpHeaders.COOKIE, cookie.getName() + "=" + cookie.getValue());
+//            }
+//
+//            HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+//            
+//            // Get base URL from HttpServletRequest
+//            String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+//
+//            // Construct full API URL
+//            String apiUrl = baseUrl + apiEndpoint;
+//
+//            ResponseEntity<String> responseEntity = restTemplate.exchange(
+//                    apiUrl,
+//                    HttpMethod.GET,
+//                    requestEntity,
+//                    String.class
+//            );
+//
+//            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+//                // If API call was successful, return the data
+//                return responseEntity.getBody();
+//            } else {
+//                // If API call failed, return an error response
+//                return "Failed to fetch data from the API: " + responseEntity.getStatusCode();
+//            }
+//        } else {
+//            // Handle case where no cookies are present
+//            return "No cookies found in the request.";
+//        }
+//    }
+    
+    public <T> T callApiWithCookies(String apiEndpoint, HttpServletRequest request, Class<T> responseType) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            HttpHeaders headers = new HttpHeaders();
+            for (Cookie cookie : cookies) {
+                headers.add(HttpHeaders.COOKIE, cookie.getName() + "=" + cookie.getValue());
+            }
+
+            HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+            
+            // Get base URL from HttpServletRequest
+            String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+
+            // Construct full API URL
+            String apiUrl = baseUrl + apiEndpoint;
+
+            ResponseEntity<T> responseEntity = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.GET,
+                    requestEntity,
+                    responseType
+            );
+
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                // If API call was successful, return the data
+                return responseEntity.getBody();
+            } else {
+                // If API call failed, return an error response
+                throw new RuntimeException("Failed to fetch data from the API: " + responseEntity.getStatusCode());
+            }
+        } else {
+            // Handle case where no cookies are present
+            throw new RuntimeException("No cookies found in the request.");
+        }
+    }
+
+	
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+package com.larchsoft.sgeiSoftwareClient.api_common;
+
+public class ApiResponse<T> {
+
+    private T data;
+    private String message;
+    
+	public ApiResponse() {
+		super();
+	}
+
+	public ApiResponse(T data, String message) {
+		super();
+		this.data = data;
+		this.message = message;
+	}
+
+	public T getData() {
+		return data;
+	}
+
+	public void setData(T data) {
+		this.data = data;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+    
+}
+

@@ -1,0 +1,81 @@
+public class Main {
+    public static void main(String[] args) {
+
+        SmsConfig.smsRegistrationFun("8877065166", "Aman Kumar", "aman@123", "Pass@123");
+
+        System.out.println("Hello world!");
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+package com.larchsoft.sgeiSoftwareClient.config;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+public class SmsConfig {
+
+	public static void smsRegistrationFun(String mobileNo, String name, String username, String pass) {
+    	//Your authentication key
+        String authkey = "771f50e9cf7784d4d54a";
+
+        //Multiple mobiles numbers separated by comma
+        String mobiles = mobileNo;
+
+        //Sender ID,While using route4 sender id should be 6 characters long.
+        String senderId = "SGESAP";
+        
+        //Your message to send, Add URL encoding here.
+        String message = "Hi+"+ name.replaceAll("\\s", "") +"%2CWelcome+to+Sri+Gowthami+Educational+Institutions.Thanks+for+joining+with+us.+Your+User+ID-"+ username +"%2Cpassword-"+ pass +".%0D%0AFrom+Team+KGR%2C%0D%0ASGEI+Group%2CA.P.%0D%0Ahttps%3A%2F%2Fsgei.ac.in";
+        
+        //define route
+        //String route="1";
+
+        //Prepare Url
+        URLConnection myURLConnection=null;
+        URL myURL=null;
+        BufferedReader reader=null;
+
+        //Send SMS API
+        String mainUrl="http://onlinebulksmslogin.com/v3/api.php?username=SRIGOWTHAMI1";
+
+        //Prepare parameter string
+        StringBuilder sbPostData= new StringBuilder(mainUrl);
+        sbPostData.append("&apikey="+authkey);
+        sbPostData.append("&mobile="+mobiles);
+        sbPostData.append("&senderid="+senderId);
+        sbPostData.append("&message="+message);
+        // sbPostData.append("&route="+route);
+        
+        //final string
+        mainUrl = sbPostData.toString();
+        try
+        {
+            //prepare connection
+            myURL = new URL(mainUrl);
+            
+            myURLConnection = myURL.openConnection();
+            myURLConnection.connect();
+            reader = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
+
+            //reading response
+            String response;
+            while ((response = reader.readLine()) != null)
+
+            //print response
+            System.out.println(myURL);
+            System.out.println(response);
+
+            //finally close connection
+            reader.close();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+    }
+	
+}

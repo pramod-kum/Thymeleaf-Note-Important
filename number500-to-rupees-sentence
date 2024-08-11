@@ -1,0 +1,37 @@
+	<tr>
+											<td colspan="3">
+												<b>Current Salary Amount Per Month In (Rs./-): </b>
+												<input type="text" id="salaryInput" class="input-group py-1 navbar-bgcolor text-light">
+												<span style="color: red;" id="salarySentence"></span>
+											</td>
+										
+										</tr>
+										
+										
+										
+////////////////////////////////////////////////////////////////////////////////
+
+<script src="https://cdn.jsdelivr.net/npm/number-to-words"></script>
+
+<script>
+	
+	
+   const salaryInput = document.getElementById('salaryInput');
+    const salarySentence = document.getElementById('salarySentence');
+
+    salaryInput.addEventListener('input', function () {
+        const inputValue = salaryInput.value.trim();
+        const sentence = convertToSentence(inputValue);
+        salarySentence.textContent = inputValue ? `${sentence}` : '';
+
+        function convertToSentence(number) {
+            if (number === '0') {
+                return 'Zero Rupees';
+            }
+
+            // Use the number-to-words library to convert the number to words
+            const words = numberToWords.toWords(parseInt(number));
+            return `${words} Rupees.`;
+        }
+    });
+</script>

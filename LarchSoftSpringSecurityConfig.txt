@@ -1,0 +1,320 @@
+package com.larchsoft.sgeiSoftwareClient.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.larchsoft.sgeiSoftwareClient.manage_users.CustomUserDetailsService;
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig {
+
+	@Autowired
+	private CustomLoginSucessHandler sucessHandler;
+
+	@Bean
+	UserDetailsService userDetailsService() {
+		return new CustomUserDetailsService();
+	}
+
+	@Bean
+	BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+	}
+
+	@Bean
+	DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(userDetailsService());
+		authProvider.setPasswordEncoder(passwordEncoder());
+
+		return authProvider;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.csrf(csrf -> csrf.disable()).authorizeRequests(requests -> requests
+				.requestMatchers(
+						"/", 
+						"/login", 
+						"/images/**", 
+						"/js/**", 
+						"/webjars/**", 
+						"/dashboard_assets/**",
+						"/frontend_assets/**",
+						"/api/v1/manage-home-page/**",
+						"/uploadFiles/homePage/**",
+						"/uploadFiles/frontendSetup/**",
+						"/contact",
+						"/online-admission-form",
+						"/api/v1/public/institution-list",
+						"/api/v1/staff/attendance"
+					).permitAll()
+
+				// EXPANSE MASTER
+				.requestMatchers(
+						"/expense-services/**"
+					).hasAnyAuthority("expenseServices", "admin")
+				
+				// SCHOOL CONFIRM REQUEST FROM ACCOUNTANTS
+				.requestMatchers(
+						"/school-accountant-services/school-confirm-request-from-accountants"
+					).hasAnyAuthority("schoolConfirmRequestFromAccountants", "admin")
+				
+				// School Accountant Services Dashboard
+				.requestMatchers(
+						"/school-accountant-services/school-confirm-cash-or-cheque-is-handed-overed",
+						"/school-accountant-services/school-verify-and-confirm-the-amount-in-credited-to-the-account"
+					).hasAnyAuthority("schoolAccountantServicesDashboard", "admin")
+				
+				// College CONFIRM REQUEST FROM ACCOUNTANTS
+				.requestMatchers(
+						"/accountant-services/confirm-request-from-accountants"
+					).hasAnyAuthority("collegeConfirmRequestFromAccountants", "admin")
+				
+				// College Accountant Services Dashboard
+				.requestMatchers(
+						"/accountant-service",
+						"/service/accountant/confirm-cash-or-cheque-is-handed-overed",
+						"/service/accountant/verify-and-confirm-the-amount-is-credited-to-the-account"
+					).hasAnyAuthority("collegeAccountantServicesDashboard", "admin")
+				
+				// Online Admission Dashboard
+				.requestMatchers(
+						"/online-admission-dashboard",
+						"/online-admission-dashboard/**"
+					).hasAnyAuthority("onlineAdmissionDashboard", "admin")
+
+				.requestMatchers(
+						"/register/**", 
+						"/admin/**", 
+						"/manage/users/list"
+					).hasAnyAuthority("admin")
+				
+				.requestMatchers("/assign-services/**").hasAnyAuthority("admin", "assignServices")
+				
+				.requestMatchers(
+						"/school-services/**"
+					).hasAnyAuthority("schoolServicesDashboard", "admin")
+
+				.requestMatchers(
+						"/campaigns/**",
+						"/campaign-addresses/**"
+					).hasAnyAuthority("admin", "campaignMasters")
+				
+				.requestMatchers("/addresss/**").hasAnyAuthority("admin", "address")
+				
+				.requestMatchers("/college/**").hasAnyAuthority("admin", "collegeMaster")
+				
+				.requestMatchers("/caste/**").hasAnyAuthority("admin", "casteMaster")
+				
+				.requestMatchers("/holiday-masters/**").hasAnyAuthority("admin", "holidayMaster")
+				
+				.requestMatchers("/month-masters/**").hasAnyAuthority("admin", "monthMaster")
+
+				.requestMatchers("/credit-card-masters/**").hasAnyAuthority("admin", "creditCardMaster")
+
+				.requestMatchers("/employee/", "/profile/").hasAnyAuthority("admin", "employee")
+				
+				.requestMatchers("/banks/**").hasAnyAuthority("admin", "bankServices")
+				
+				.requestMatchers("/loan-services/**").hasAnyAuthority("admin", "loanServices")
+				
+				.requestMatchers("/student/**").hasAnyAuthority("student")
+				
+				.requestMatchers("/fee-masters/**").hasAnyAuthority("admin", "feeMasters")
+				
+				.requestMatchers("/time-table/**").hasAnyAuthority("admin", "timeTable")
+				
+				.requestMatchers("/payroll-master/**").hasAnyAuthority("admin", "payrollMaster")
+				
+				.requestMatchers("/agents/**").hasAnyAuthority("admin", "agentAdvance")
+				
+				.requestMatchers("/campus-masters/**").hasAnyAuthority("admin", "campusMaster")
+				
+				.requestMatchers("/mapping-masters/**").hasAnyAuthority("admin", "mappingMaster")
+				
+				.requestMatchers("/vehicle-masters/**").hasAnyAuthority("admin", "vehicleMaster")
+				
+				.requestMatchers("/admin/import/address/**").hasAnyAuthority("admin", "importMaster")
+				
+				.requestMatchers("/staff-masters/**", "/ledger-masters/**", "/report-masters/**").hasAnyAuthority("admin", "reportMaster")
+				
+				.requestMatchers("/setting-masters/**").hasAnyAuthority("admin", "setting")
+				
+				.requestMatchers("/student-services/**").hasAnyAuthority("admin", "studentServices")
+				
+				// COURSE MASTER
+				.requestMatchers(
+						"/course/**",
+						"/course-masters/**"
+					).hasAnyAuthority("admin", "courseMaster")
+				
+				// SYLLABUS TRACKING
+				.requestMatchers(
+						"/syllabus-tracking/**"
+					).hasAnyAuthority("admin", "syllabusTrackingDashboard")
+				
+				// STUDENT EXAM SERVICES DASHBOARD
+				.requestMatchers(
+						"/student-exam-service/**",
+						"/student-masters/exam-time-table-master",
+						"/student-masters/edit-exam-time-table-master/**",
+						"/student-masters/course-group-exam-mapping-master",
+						"/stdent-masters/add-exam-time/**"
+					).hasAnyAuthority("admin", "studentExamServicesDashboard")
+				
+				.requestMatchers("/student-masters/**").hasAnyAuthority("admin", "studentExam")
+				
+				// Manage Home Page
+				.requestMatchers("/manage-home-page/**").hasAnyAuthority(
+						"admin", 
+						"manageHomePage"
+					)
+				
+				// College Student Admission Form
+				.requestMatchers(
+						"/manage/users/admission",
+						"/manage/users/admission-form",
+						"/manage/users/admission-details-form/**",
+						"/manage/users/admission-previous-form/**",
+						"/student-service/admission-fee-form-two/**",
+						
+						"/manage/users/edit/admission-form/**",
+						"/manage/users/edit/admission-details-form/**",
+						"/manage/users/edit/admission-details-form/**",
+						"/manage/users/edit/admission-previous-form/**"
+					).hasAnyAuthority("admin", "admissionForm")
+				
+//				.requestMatchers("/manage/users/**").hasAnyAuthority("admin", "manageUsers")
+				
+				.requestMatchers("/staff-services").hasAnyAuthority(
+						"admin", 
+						"staffServicesDashboard"
+//						,
+//						"staffMaster"
+					)
+				
+				.requestMatchers(
+						"/staff-services/staff-entry",
+						"/add-new-staff/**",
+						"/manage/users/staff-profile-entry-edit/**",
+						"/manage/users/staff-profile-kyc-entry-edit/**",
+						"/manage/users/staff-bank-kyc-entry-edit/**",
+						"/manage/users/staff-education-details-edit/**",
+						
+						"/manage/users/staff-entry",
+						"/manage/users/staff-profile-entry-view/**",
+						"/manage/users/staff-profile-kyc-entry-view/**",
+						"/manage/users/staff-bank-kyc-entry-view/**",
+						"/manage/users/staff-education-details-view/**",
+						"/manage/users/staff-education-details-entry/**",
+						"/manage/users/staff-full-details-view/**"
+					).hasAnyAuthority(
+						"admin", 
+						"staffEntry"
+					)
+			
+				.requestMatchers("/staff-salary-masters/**").hasAnyAuthority("admin", "staffSalary")
+				
+				.requestMatchers(
+						"/staffleave/staff-leave-applied-show",
+						"/staffleave/staff-leave-apply"
+					).hasAnyAuthority("admin", "applyLeaveMovement")
+				
+				.requestMatchers(
+						"/staffleave/staff-leave-confirmation-details",
+						"/staffleave/staff-leave-confirmation-details-show/**"
+					).hasAnyAuthority("admin", "confirmLeaveMovement")
+				
+				// Allotting Students To The Section
+				.requestMatchers(
+						"/attendance-module/allotting-students-to-sections",
+						"/attendance-module/allotting-students-to-sections-list",
+						"/attendance-module/map-or-unmap-students"
+					).hasAnyAuthority("admin", "allottingStudentsToSections")
+				
+				// Students Promotion
+				.requestMatchers("/promote-student/**").hasAnyAuthority("admin", "studentsPromotion")
+				
+				// College Students Fee Collection
+				.requestMatchers(
+						"/student-fee-collection-services/**",
+						"/manage/users/student-fee-collection-form/**",
+						"/student-service/fee-collection/student-fee-collection-page-two/**",
+						"/manage/users/hand-over-cash-or-cheque-to-the-accountant/**"
+					).hasAnyAuthority("collegeStudentsFeeCollectionServices", "admin")
+				
+				.requestMatchers("/student-print-details/admission-view-print").hasAnyAuthority("admin", "admissionView")
+								
+				.requestMatchers("/admissions-list/**").hasAnyAuthority("admin", "studentAdmissionList")
+				
+				.requestMatchers("/staffarrears/**").hasAnyAuthority("admin", "staffArrears")
+				
+				.requestMatchers("/staff-masters/**").hasAnyAuthority("admin", "staffAttendance")
+				
+				.requestMatchers("/college-data/college-list").hasAnyAuthority("admin", "studentListCollegeWise")
+				
+				.requestMatchers("/college-data/fee-list").hasAnyAuthority("admin", "feeListCollegeWise")
+				
+				.requestMatchers("/college-data/staff-list").hasAnyAuthority("admin", "staffListCollegeWise")
+				
+				.requestMatchers("/admit-card/student-admit-card/").hasAnyAuthority("admin", "studentAdmitCardCollegeWise")
+				
+				.requestMatchers("/college-data/assigned-college-staff").hasAnyAuthority("admin", "assignedCollegeStaff")
+				
+				.requestMatchers("/library/**").hasAnyAuthority("admin", "libraryMaster")
+
+				.requestMatchers("/library/library-list").hasAnyAuthority("admin", "libraryList")
+				
+				.requestMatchers("/student-card/student-id-card").hasAnyAuthority("admin", "studentIdCard")
+				
+				.requestMatchers("/course-masters/add-course-group-master").hasAnyAuthority("admin", "courseGroupMaster")
+				
+				.requestMatchers("/university-master/view-university").hasAnyAuthority("admin", "viewUniversity")
+				
+				.requestMatchers("/university-college-mapping/**").hasAnyAuthority("admin", "universityMapping")
+
+				.requestMatchers("/qualification-masters/qualification-master").hasAnyAuthority("admin", "qualificationMaster")
+				
+				.requestMatchers("/qualification-masters/qualification-level").hasAnyAuthority("admin", "qualificationLevel")
+
+				.requestMatchers("/college-data/my-refer-student").hasAnyAuthority("admin", "staffReferredList")
+
+				.anyRequest().authenticated())
+				// configuration for login
+				.csrf(csrf -> csrf.disable())
+				.formLogin(form -> form
+						.loginPage("/login")
+						.loginProcessingUrl("/login")
+						.failureUrl("/login?error=true")
+						.successHandler(sucessHandler)
+						.defaultSuccessUrl("/dashboard")
+						.permitAll()
+					)
+				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutSuccessUrl("/").permitAll());
+
+		http.authenticationProvider(authenticationProvider());
+		http.headers(headers -> headers.frameOptions().sameOrigin());
+
+		return http.build();
+	}
+
+}

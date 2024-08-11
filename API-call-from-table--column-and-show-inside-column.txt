@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<title>Admission</title>
+	<th:block th:replace="common/dashboard_script :: head_script" />
+
+	<script>
+		function admission_select_func() {
+
+			var mainElement = document.getElementById("admission_select")
+			var srcElement = document.getElementById("previous_box")
+
+			// console.log(mainElement.value)
+
+			if (mainElement.value == "goForAdmission") {
+				srcElement.style.display = 'flex';
+			}
+
+			else {
+				srcElement.style.display = 'none';
+			}
+
+		}
+	</script>
+
+</head>
+
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+
+		<!-- Navbar -->
+		<th:block th:replace="common/dashboard_navbar :: navebar" />
+		<!-- /.navbar -->
+
+		<!-- Main sidebar -->
+		<th:block th:replace="common/dashboard_sidebar :: sidebar" />
+		<!-- Main sidebar ends -->
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<section class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1>Admission</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a th:href="@{/dashboard}">Dashboard</a></li>
+								<li class="breadcrumb-item active">Manage Page</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+
+				<div class="pjflex pt-3">
+					<h4 class="fw-bold text-center text-monospace font-weight-bold">
+						STUDENT ADMISSION FORM</h4>
+				</div>
+				<div class="pjflex mb-3">
+					<div class="horizontaline border-animate"></div>
+				</div>
+
+				<div class="pjflex p-5 ">
+
+					<div class=" login-bgcolor border-box p-0 card card-outline card-primary login-bgcolor"
+						style="width: 400px; background-color: rgb(186, 211, 223)">
+
+						<div class="register-body px-4 py-3">
+
+							<form th:action="@{/manage/users/admission-form}">
+
+								<div class="d-flex justify-content-between mt-3">
+									<div class="input-group-append">
+										<div class="input-group-text login-bgcolor">Academic
+											Year :</div>
+									</div>
+
+									<select name="academicYear" id="selectUser"
+										class="input-group py-1 navbar-bgcolor text-light" style="width: 200px">
+										<option value="">Select</option>
+										<option th:each="data:${academicYearsData}">[[${data}]]</option>
+									</select>
+								</div>
+
+								<div class="d-flex justify-content-between mt-3">
+
+									<div class="input-group-append">
+										<div class="input-group-text login-bgcolor">Select:</div>
+									</div>
+
+									<select name="actionParameter" id="admission_select"
+										class="input-group py-1 navbar-bgcolor text-light"
+										onclick="admission_select_func()" style="width: 200px">
+										<option value="">Select</option>
+										<option value="unspecified">New Student</option>
+										<option value="goForAdmission">Previously Studied in
+											Our Institutions</option>
+									</select>
+
+								</div>
+
+								<div class=" justify-content-between mt-3" id="previous_box" style="display: none;">
+									<div class="input-group-append">
+										<div class="input-group-text login-bgcolor " style="">
+											Student Id :</div>
+									</div>
+
+									<input type="text" class="form-control navbar-bgcolor text-light" placeholder=""
+										name="student_id" style="width: 200px;">
+								</div>
+
+								<div class="text-center mb-3 mt-1">
+									<button id="" type="submit"
+										class="my-2 btn navbar-bgcolor text-light font-weight-bold light-hover">ADD
+										STUDENT</button>
+								</div>
+
+							</form>
+
+
+
+
+						</div>
+
+
+					</div>
+
+				</div>
+
+
+				<div class="mt-5" style="height: 80px; background-color: #00273a;">
+					<div class="pjflex pt-3">
+						<h4 class="fw-bold text-center text-monospace font-weight-bold"
+							style="color: rgb(201, 209, 212);">STUDENT ADMISSION DONE BY
+							YOU</h4>
+					</div>
+
+					<div class="pjflex mb-3">
+						<div class="horizontaline border-animate"
+							style="border-bottom: 4px solid rgb(201, 209, 212) !important;"></div>
+					</div>
+
+				</div>
+
+				<div class="mt-5 ">
+
+					<div class="container-fluid">
+
+						<div class="">
+							<!-- /.card-header -->
+							<div class="">
+								<table id="example4" class="table table-bordered table-striped table-responsive"
+									style="border-collapse: collapse; overflow-x: auto; display: block; width: fit-content; max-width: 100% !important;">
+									<thead>
+										<tr style="background-color: #1d6588; color: white;">
+											<th>S.No</th>
+											<th hidden>Student Id</th>
+											<th>Student Id</th>
+											<th>Student Name</th>
+											<th>College Name</th>
+											<th>Course</th>
+											<th>Course <br> Year/Semester</th>
+											<th>Photo</th>
+											<th>Fee Amount Commited</th>
+											<th>Amount Paid by Students</th>
+											<th>Balance to be Received</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody id="tbody" style="background-color: #aee9f8;">
+										<tr th:each="data, i : ${admissionEntity}">
+											<td th:text="${i.index + 1}"></td>
+											<td hidden th:text="${data.sid}"></td>
+											<td>
+												<div th:id="${data.sid}"></div>
+												<script>
+													$(function () {
+														var id = "[[${data.sid}]]";
+														$.ajax({
+															type: 'GET',
+															url: '/user/api/findUserById/' + id,
+															success: function (result) {
+																var result = JSON.parse(result);
+																document.getElementById("[[${data.sid}]]").innerHTML = result['username'];
+															}
+														});
+													});
+												</script>
+											</td>
+
+											<td th:text="${data.name}"></td>
+
+											<td>
+												<span th:each="data1:${admissionDetailsEntity}"
+													th:if="*{data1.sid} == *{data.sid}">
+													<span th:each="data2:${collegeMasterEntity}"
+														th:if="${data1.college_id} == ${data2.id}">
+														[[${data2.collegeName}]]
+													</span>
+												</span>
+											</td>
+
+											<td><span th:each="data1:${admissionDetailsEntity}"
+													th:if="${data.sid} == ${data1.sid}">
+													[[${data1.course}]] </span></td>
+
+											<td><span th:each="data1:${admissionDetailsEntity}"
+													th:if="${data.sid} == ${data1.sid}">
+													[[${data1.course_years}]] </span></td>
+											<td><span><a th:href="*{data.photo}" target="_blank"> <img
+															style="width: 50px; height: 50px;" th:if="*{data.photo}"
+															th:src="{data.photo}" th:alt="{data.photo}"
+															class="img-fluid">
+													</a> </span> <span> <!-- for null --> <img
+														style="width: 50px; height: 50px;" th:if="*{data.photo} == null"
+														src="/dashboard_assets/images/profile.png" class="img-fluid">
+												</span></td>
+
+
+											<td>
+												<span th:each="data2:${admissionFeeEntity}"
+													th:if="${data.sid} == ${data2.sid}">
+													[[${data2.fee_amount_committed}]] </span>
+											</td>
+											<td>
+												<div th:id="'amount_paid_by_student' + ${data.sid}"></div>
+												<script>
+													$(function () {
+														var sid = "[[${data.sid}]]";
+														$.ajax({
+															type: 'GET',
+															url: '/api/v1/student-to-segi-paid-fee/' + sid,
+															success: function (result) {
+																var result = JSON.parse(result);
+																document.getElementById("amount_paid_by_student" + "[[${data.sid}]]").innerHTML = result;
+																console.log(result)
+																console.log(sid)
+															}, 
+															error: function (xhr, status, error) {
+																console.error("Error in AJAX request:", status, error);
+															}
+														});
+													});
+												</script>
+											</td>
+
+											<td>
+												<div th:id="'balance_to_be_received_' + ${data.sid}"></div>
+												<script>
+													$(function () {
+														var sid = "[[${data.sid}]]";
+														$.ajax({
+															type: 'GET',
+															url: '/api/v1/student-to-segi-balance-fee/' + sid,
+															success: function (result) {
+																var result = JSON.parse(result);
+																document.getElementById("balance_to_be_received_" + "[[${data.sid}]]").innerHTML = result;
+																console.log(result)
+																console.log(sid)
+															}, 
+															error: function (xhr, status, error) {
+																console.error("Error in AJAX request:", status, error);
+															}
+														});
+													});
+												</script>
+											</td>
+											<td>
+											    <div class="d-flex">
+											        <a th:href="@{'/manage/users/admission-view/redirect/'+${data.sid}}" target="_blank" class="link-item btn btn-outline-primary mr-2">
+											            <i class="fas fa-edit"></i>
+											            <span class="ml-1">Admission Edit</span>
+											        </a>
+											
+											        <a th:href="@{'/manage/users/admission-view-print/redirect/'+${data.sid}}" target="_blank" class="link-item btn btn-outline-danger mr-2">
+											            <i class="fas fa-print"></i>
+											            <span class="ml-1">Print</span>
+											        </a>
+											
+											        <a th:href="@{'/manage/users/student-fee-collection/redirect/'+${data.sid}}" target="_blank" class="link-item btn btn-outline-primary">
+											            <i class="fas fa-database"></i>
+											            <span class="ml-1">Fee Collection</span>
+											        </a>
+											    </div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+
+			</section>
+
+		</div>
+
+		<th:block th:replace="common/dashboard_script :: footer_copyright_script" />
+
+	</div>
+	<!-- ./wrapper -->
+
+	<th:block th:replace="common/dashboard_script :: footer_script" />
+
+</body>
+
+</html>

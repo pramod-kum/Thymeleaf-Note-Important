@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Scientific Study | A School Management System in India</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Scientific Study is an online school management system. It is an India’s leading school operating and data management get managed through its efficient ERP." />
+  <meta name="keywords" content="School Management Software, School ERP, School Manager, Public School System, Online School Management, School Data Management, Educational Management, School Attendance Software" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link href="../../css/navbarcss.css?v=10" rel="stylesheet" type="text/css" />
+  <link href="../../css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+  <link href="../../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link href="../../css/siteloader/siteLoader.min.css" rel="stylesheet" type="text/css" />
+  <link href="../../css/toastr/toastr.css" rel="stylesheet" type="text/css" />
+  <link href="../../css/bootstrap-switch.min.css" rel="stylesheet" />
+  <link href="../../css/dashboard_v1.css?v=10" rel="stylesheet" type="text/css" />
+  <link href="../../css/dashboard_v2.css?v=10" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+        .onlinefeeheader .shortheader {
+            padding: 15px 0;
+            background: #f7f7f7;
+        }
+
+        .onlinefeeheader .logo-img img {
+            max-height: 83px;
+            border-radius: 100%;
+        }
+
+        .welcomemsg h2 {
+            font-weight: 300;
+        }
+
+        .welcomemsg p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .msgbtn .login-box {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .msgbtn .login-box a {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+            transition: background 0.3s;
+        }
+
+        .msgbtn .login-box a:hover {
+            background: #f7f7f7;
+        }
+
+        .alert-note {
+            margin-top: 20px;
+        }
+
+        .alert-note .alert {
+            font-size: 14px;
+        }
+    </style>
+
+  <!-- jQuery and Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/core/jquery-2.2.0.min.js" type="text/javascript"></script>
+  <script src="../../js/core/jquery.tmpl.min.js" type="text/javascript"></script>
+  <script src="../../js/core/jquery-ui.1.11.4.custom.min.js" type="text/javascript"></script>
+  <script src="../../js/core/moment-with-locales.js" type="text/javascript"></script>
+  <script src="../../js/bootstrap-switch.min.js"></script>
+  <script src="../../js/core/spt.all.js" type="text/javascript"></script>
+  <script src="/js/spt.json.js"></script>
+  <script src="../../js/siteloader/siteLoader.min.js" type="text/javascript"></script>
+  <script src="../../js/toastr/toastr.min.js" type="text/javascript"></script>
+  <script src='https://www.google.com/recaptcha/api.js' type="text/javascript"></script>
+
+  <link rel="icon" type="image/png" href="../../images/favicon32.png" sizes="32x32">
+
+  <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+
+</head>
+
+<body>
+<!-- Modal start -->
+<div class="onlinefeeheader">
+  <div class="container-fluid p-0 small">
+    <div class="shortheader">
+      <div class="header">
+        <div class="top-header d-flex align-items-center py-2">
+          <div>
+            <a href="https://mbis.scientificstudy.in/school/feedback?key=bWJpcw==" target="_blank">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> Help Desk |
+            </a>
+          </div>
+          <div>
+            <a href="https://mbis.scientificstudy.in" target="_blank">
+              <i class="fa fa-lock" aria-hidden="true"></i> Parent login |
+            </a>
+          </div>
+          <div>
+            <p><i class="fa fa-envelope" aria-hidden="true"></i> Email: admin@mbispatna.org |</p>
+          </div>
+          <div>
+            <p class="mb-0"><i class="fa fa-phone" aria-hidden="true"></i> Call Us: 7903312446</p>
+          </div>
+        </div>
+        <div class="bottom-header">
+          <div class="row">
+            <div class="col-sm-2">
+              <div class="logo-img">
+                <img src="https://mbis.scientificstudy.in/SCHOOLDATA/mbis/schoollogo.png" alt="logo" class="img img-responsive mx-auto d-block">
+              </div>
+            </div>
+            <div class="col-sm-8 text-center">
+              <h2>Manava Bharati International School</h2>
+              <p class="text-black" style="font-size: 14px; white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis;">
+                Near AIIMS Patna, NH-98, Nawada More, Gosai Math, City - Patna. (Bihar)
+              </p>
+            </div>
+            <div class="col-sm-2">
+            </div>
+          </div>
+        </div>
+        <span>ONLINE FEE PAYMENT</span>
+      </div>
+    </div>
+    <input type="hidden" name="SchoolCode" id="SchoolCode" value="mbis">
+    <input type="hidden" name="hdnSchoolName" id="hdnSchoolName" value="Manava Bharati International School">
+    <input type="hidden" name="hdnCity" id="hdnCity" value="Patna">
+  </div>
+</div>
+
+<section style="margin-top: 0;">
+  <div class="container p-0">
+    <div class="onlinefee-wrapper newloginwrapper" ng-controller="onlineFeePayment">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="onlinefeedetails">
+            <form action="/searchStudent" method="post">
+              <input name="__RequestVerificationToken" type="hidden" value="aaV5d_BJoLlBpt8XH9KVohbdaq8vYtSds3j9KOvbghcFYGyj1vVH2HcRn8LBpSOhUFy6W8ITJyZEkL__zbwLLH3PkmWbnd6ABs2gNw6NVNg1" />
+              <div class="form-group">
+                <label for="txtAdmissionNumber" class="inputcontrollabel">Admission Number</label>
+                <input name="AdmissionNumber" placeholder="" class="form-control" type="text" required id="txtAdmissionNumber" maxlength="20" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="txtMobile" class="inputcontrollabel">Father Mobile Number</label>
+                <input name="MobileNumber" placeholder="" class="form-control" required id="txtMobile" maxlength="10" autocomplete="off">
+              </div>
+              <div class="form-group mt-3">
+                <div class="g-recaptcha" data-sitekey="6LcBdFMUAAAAALzj90FXYGQTAnJFk_qmWk_9F49a"></div>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-block" id="btnSearch">Submit</button>
+                <i class="fa fa-spinner fa-spin" id="imgLoader" style="font-size: 33px; margin-top: 10px; display: none"></i>
+              </div>
+              <input type="hidden" name="hdnSchoolCode" id="hdnSchoolCode">
+              <input type="hidden" name="hdnMode" id="hdnMode" value="">
+            </form>
+            <br />
+          </div>
+        </div>
+        <div class="col-sm-8 text-left">
+          <div class="welcomemsg">
+            <h2>Welcome to</h2>
+            <p>
+              Manava Bharati International School Online Fees Payment Platform.<br />
+              Manava Bharati International School, "Scientific Study" and Payment Gateway Company have partnered to offer you a secure online tool for online Fees payment. Please always use this page for payment.
+            </p>
+          </div>
+          <div class="msgbtn mt-4">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="login-box">
+                  <a href="" target="_blank">
+                    <img src="https://mbis.scientificstudy.in/images/key.png" class="img-fluid" /><br />
+                    PARENT LOGIN
+                  </a>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="login-box">
+                  <a href="" target="_blank">
+                    <img src="https://mbis.scientificstudy.in/images/phone-app.png" class="img-fluid" /><br />
+                    DOWNLOAD PHONE APP
+                  </a>
+                </div>
+              </div>
+              <div class="col-sm-4">
+               <!-- <div class="login-box">
+                  <a href="" target="_blank">
+                    <img src="https://mbis.scientificstudy.in/images/key.png" /><br />
+                    Contact School Admin For Your Concerns
+                  </a>
+                </div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-sm-12 alert-note">
+          <div class="alert alert-default">
+            <strong style="color:#0089ff;">Tips:</strong>
+            <ol>
+              <li>Please enter Admission Number and Registered Phone Number</li>
+              <li>Click on "Submit" to get the details of the fee dues</li>
+              <li>Verify the details & Click on "Pay Now" and you will be directed to online portal. You have to select your mode of payment such as credit card, debit card, net banking etc. Kindly follow the instructions as applicable to your choice of payment</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input type="hidden" name="admissionNumber" id="admissionNumber">
+  <input type="hidden" name="admissionNumber" id="fatherPhone">
+  <input type="hidden" name="mode" id="mode">
+</section>
+
+<script type="text/javascript">
+        var me = $(this);
+        var schoolCode = $("#SchoolCode").val();
+        $("#hdnSchoolCode").val(schoolCode);
+        me.buttonText = $("#buttonText");
+        me.btnSearch = $("#btnSearch");
+        me.imgLoader = $("#imgLoader");
+        me.buttonText.text("Submit");
+        me.mode = $("#mode").val();
+        me.admissionNumber = $("#admissionNumber");
+        me.fatherPhone = $("#fatherPhone");
+
+        if (me.mode == "admission") {
+            $("#txtAdmissionNumber").val(me.admissionNumber.val());
+            $("#txtMobile").val(me.fatherPhone.val());
+        }
+
+        me.btnSearch.click(function () {
+            var Obj = {
+                AdmissionNumber: { id: "txtAdmissionNumber", validations: { required: "required." }, appender: "#errAdmissionNumber" },
+                Mobile: { id: "txtMobile", validations: { required: "required" }, appender: "#errMobile" }
+            };
+
+            var validate = new spt.Validate(Obj);
+            var isvalid = validate.isValid();
+
+            if (isvalid) {
+                me.btnSearch.hide();
+                me.imgLoader.show();
+                setTimeout(function () {
+                    me.btnSearch.show();
+                    me.imgLoader.hide();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>

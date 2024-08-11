@@ -1,0 +1,209 @@
+<script th:inline="javascript">
+    // communication address
+
+    $(document).ready(function () {
+
+        $("#yearOrSemesterId").change(function () {
+
+            function resetTableData(tableId) {
+                $(`#${tableId} select`).val('');
+            }
+
+            if ($(this).val() === "Year") {
+                $("#yearId").show();
+                $("#semesterId").hide();
+                resetTableData("semesterId");
+            } else if ($(this).val() === "Semester") {
+                $("#yearId").hide();
+                $("#semesterId").show();
+                resetTableData("yearId");
+            } else {
+                // Handle other cases if needed
+                $("#yearId").hide();
+                $("#semesterId").hide();
+                resetTableData("yearId");
+                resetTableData("semesterId");
+            }
+        });
+
+    });
+</script>
+
+<!-- Your HTML code remains unchanged -->
+<tr>
+    <th>Year/Semester:</th>
+    <td colspan="3">
+        <select id="yearOrSemesterId" name="yearOrSemester" class="input-group py-1 navbar-bgcolor text-light">
+            <option value="">--Select--</option>
+            <option value="Year">Year</option>
+            <option value="Semester">Semester</option>
+        </select>
+    </td>
+</tr>
+<tr id="yearId" style="display: none;">
+    <th>Year:</th>
+    <td colspan="3">
+        <select name="year" class="input-group py-1 navbar-bgcolor text-light">
+            <option value="">Select</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+        </select>
+    </td>
+</tr>
+<tr id="semesterId" style="display: none;">
+    <th>Semester:</th>
+    <td colspan="3">
+        <select name="semester" class="input-group py-1 navbar-bgcolor text-light">
+            <option value="">Select</option>
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+            <option value="VI">VI</option>
+            <option value="VII">VII</option>
+            <option value="VIII">VIII</option>
+           
+        </select>
+    </td>
+</tr>
+
+
+-----------------AUTO CALL IN EDIT/UPDATE-------------------
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+        function resetTableData(tableId) {
+            $(`#${tableId} select`).val('');
+        }
+
+        // Initial reset based on the current value of #yearOrSemesterId
+        if ($("#yearOrSemesterId").val() === "Year") {
+            $("#yearId").show();
+            $("#semesterId").hide();
+            resetTableData("semesterId");
+        } else if ($("#yearOrSemesterId").val() === "Semester") {
+            $("#yearId").hide();
+            $("#semesterId").show();
+            resetTableData("yearId");
+        } else {
+            $("#yearId").hide();
+            $("#semesterId").hide();
+            resetTableData("yearId");
+            resetTableData("semesterId");
+        }
+
+        // Auto call the reset function on change
+        $("#yearOrSemesterId").change(function () {
+            if ($(this).val() === "Year") {
+                $("#yearId").show();
+                $("#semesterId").hide();
+                resetTableData("semesterId");
+            } else if ($(this).val() === "Semester") {
+                $("#yearId").hide();
+                $("#semesterId").show();
+                resetTableData("yearId");
+            } else {
+                $("#yearId").hide();
+                $("#semesterId").hide();
+                resetTableData("yearId");
+                resetTableData("semesterId");
+            }
+        });
+
+    });
+</script>
+
+////////////////Auto Call Second Method//////////////
+
+<script>
+
+  window.onload = function () {
+    receivedAsFunc();
+};
+   
+	function receivedAsFunc() {
+		var receivedAs = document.getElementById("receivedAs");
+		var show1 = document.getElementById("onlineTransferShow1");
+		var show2 = document.getElementById("onlineTransferShow2");
+		
+		 function resetTableData(tableId) {
+            $(`#${tableId} select`).val('');
+          }
+    
+		if (receivedAs.value === "Online Transfer") {
+			show1.style.display = "";
+			show2.style.display = "";
+		} else {
+			show1.style.display = "none";
+			show2.style.display = "none";
+			resetTableData("onlineTransferShow1");
+            resetTableData("onlineTransferShow2");
+		}
+	}
+</script>
+
+------------------Html-----------------
+
+<th>Given as :</th>
+										<td><select name="givenAs" id="receivedAs"
+											onchange="receivedAsFunc();"
+											class="input-group py-1 navbar-bgcolor text-light" th:field="*{findData.givenAs}">
+												<option value="">--Select--</option>
+												<option value="Cash">Cash</option>
+												<option value="Online Transfer">Online Transfer</option>
+										</select></td>
+									</tr>
+
+									<tr id="onlineTransferShow1" style="display: none;">
+										<th>Given Account :</th>
+										<td><select
+											class="input-group py-1 navbar-bgcolor text-light"
+											id="accountFromInfo" onchange="getFromAccountsInfo();"
+											name="givenAccountinfo" th:field="*{findData.givenAccountinfo}">
+												<option value="">--Select--</option>
+												<option value="College Accounts">College Accounts</option>
+												<option value="Society Accounts">Society Accounts</option>
+												<option value="Management Accounts">Management
+													Accounts</option>
+										</select></td>
+
+									</tr>
+
+									<tr id="onlineTransferShow2" style="display: none;">
+										<th>Given Account Info :</th>
+										<td colspan="3"><select
+											class="input-group py-1 navbar-bgcolor text-light"
+											name="givenAccount" th:field="*{findData.givenAccount}">
+												<option value="">--Select--</option>
+												<option class="collegeAccounts1" style="display: none;"
+													th:each="data1 : ${collegeAccountsDataSet}"
+													th:value="${data1.bankAcNo}">College Accounts -
+													[[${data1.bankName}]], [[${data1.branchName}]]
+													([[${data1.bankAcNo}]], [[${data1.ifsc}]])</option>
+												<option class="societyAccounts1" style="display: none;"
+													th:each="data2: ${societyAccountsDataSet}"
+													th:value="${data2.accountNo}">Society Accounts -
+													[[${data2.bankName}]], [[${data2.branchName}]]
+													([[${data2.accountNo}]], [[${data2.ifsCode}]])</option>
+												<option class="managementAccounts1" style="display: none;"
+													th:each="data3 : ${accountManagementDataSet}"
+													th:value="${data3.bankAcNo}">Management Account -
+													[[${data3.bankName}]], [[${data3.branchName}]]
+													([[${data3.bankAcNo}]], [[${data3.ifsCode}]])</option>
+										</select></td>
+									</tr>
+
+									<tr>
+										<th>Simple Interest :</th>
+										<td><input type="text"
+											class="input-group py-1 navbar-bgcolor text-light"
+											id="siResult" name="simpleInterest" th:field="*{findData.simpleInterest}"></td>
+										<th>Compound Interest :</th>
+										<td><input type="text"
+											class="input-group py-1 navbar-bgcolor text-light"
+											id="ciResult" name="compoundInterest" th:field="*{findData.compoundInterest}"></td>
+									</tr>
+
+									

@@ -1,0 +1,20 @@
+// Redirect to the specified URL
+					//	window.location.href = "/student-attendance-module/edit-student-attendance?collegeId="+[[${param.collegeId}]]+"&acYr="+[[${param.acYr}]]+"&courseId="+[[${param.courseId}]]+"&yerOrSem="+[[${param.yerOrSem}]]+"&sectionId="+[[${param.sectionId}]]+"&date="+formattedDate+"&subjectName="+subName;
+					
+					
+					/////////////////NEW////////////////////
+					
+					<script type="text/javascript">
+    // Thymeleaf will replace `[[${date}]]` and `[[${sName}]]` with the actual values before rendering
+    var formattedDate = "[[${date}]]"; // Ensure this is a string by wrapping it in quotes
+    var subName = "[[${sName}]]"; // Ensure this is a string by wrapping it in quotes
+
+    // Redirect to the specified URL
+    window.location.href = "/student-attendance-module/edit-student-attendance?collegeId=" + [[${param.collegeId}]] + 
+                           "&acYr=" + [[${param.acYr}]] + 
+                           "&courseId=" + [[${param.courseId}]] + 
+                           "&yerOrSem=" + [[${param.yerOrSem}]] + 
+                           "&sectionId=" + [[${param.sectionId}]] + 
+                           "&date=" + encodeURIComponent(formattedDate) + 
+                           "&subjectName=" + encodeURIComponent(subName);
+</script>

@@ -1,0 +1,51 @@
+<head>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+
+
+<style>
+.search-box button {
+	background-color: #2a4856 !important;
+	color: white !important;
+	width: 100% !important;
+	border: none;
+}
+
+td.small-td {
+	width: 600px;
+	/* Adjust the width as needed */
+}
+</style>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"
+	defer></script>
+
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	th:href="@{/dashboard_assets/css/select2custom.css}">
+
+</head>
+//////////////////////////////////////////////////////////////////////////
+
+
+<td style="width: 200px;" class="select2Container"><select class="select2 staff form-control" data-width="100%" required>
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+	<script>
+			function refreshSelector() {
+				setTimeout(() => {
+					$('.select2').select2();
+				});
+			}
+
+			$(document).ready(function () {
+				$('.select2').select2();
+			});
+	</script>

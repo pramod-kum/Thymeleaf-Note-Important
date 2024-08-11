@@ -1,0 +1,12 @@
+@Query("SELECT COUNT(a) FROM AdmissionDetailsEntity a " +
+    	       "JOIN User u ON a.sid = u.id " +
+    	       "WHERE a.college_id = :collegeId " +
+    	       "AND a.course_years = :courseYears " +
+    	       "AND (:academicYear IS NULL OR a.academic_year = :academicYear) " +
+    	       "AND u.isDelete = :isDeleted")
+    long getCountOfStudents(
+    	       @Param("academicYear") String academicYear,
+    	       @Param("collegeId") String collegeId,
+    	       @Param("courseYears") String courseYears, 
+    	       @Param("isDeleted") boolean isDeleted
+    	  );

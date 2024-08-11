@@ -1,0 +1,71 @@
+
+//////////////////////////////////////
+@RestController
+@RequestMapping("/campus-masters/api")
+public class CampusBuildingExpenseApiController {
+	
+	@Autowired
+    private ExpenseSubHeadRepository expenseSubHeadRepository; // Assuming you have a repository for ExpenseSubHead
+			
+	@GetMapping("/findExpenseSubHeadById/{id}")
+	public String findSubHeadById(@PathVariable("id") String id) {
+
+		List<ExpenseSubHeadMasterEntity> data = expenseSubHeadRepository.findAllByExpenseHeadId(id);
+
+		Gson gson = new Gson();
+		return gson.toJson(data);
+	}
+}
+//////////////////////////////////////////////////////////
+	<tr>
+												<th>Expense Head:</th>
+												<td>
+													<select id="expenseHead"
+														class="input-group py-1 navbar-bgcolor text-light">
+														<option value="">--Select Payee--</option>
+														<option th:each="data : ${expenseHeadMasterData}"
+															th:value="${data.id}">
+															[[${data.expense_head}]]
+														</option>
+													</select>
+												</td>
+												<th style="text-align: right;">Expense Sub-Head:</th>
+												<td><select id="expenseSubHead"
+														class="input-group py-1 navbar-bgcolor text-light">
+														<option value="">--Select Expense Sub-Head--</option>
+													</select>
+												</td>
+											</tr>
+
+////////////////////////////////////////////
+
+// Calling API for fetching data for expense sub head
+		$(document)
+			.ready(
+				function () {
+
+					$('#expenseHead')
+						.on(
+							'change',
+							function () {
+								var expenseHeadId = $(this).val();
+								$
+									.ajax({
+										type: 'GET',
+										url: '/campus-masters/api/findExpenseSubHeadById/' + expenseHeadId,
+										success: function (result) {
+											var result = JSON.parse(result);
+											var s = '<option value="">Select</option>';
+											for (var i = 0; i < result.length; i++) {
+												s += '<option value="' + result[i].id + '">'
+													+ result[i].expense_sub_head
+													+ '</option>';
+											}
+											$('#expenseSubHead').html(s);
+										}
+									});
+							});
+
+				});
+
+	</script>
